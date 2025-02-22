@@ -74,7 +74,7 @@
                 function animateDrop() {
                     new TWEEN.Tween(crate.position)
                         .to({ y: 0 }, 2000)
-                        .easing(TWEEN.Easing.Bounce.Out)
+                        .easing(TWEEN.Easing.Cubic.Out)
                         .onComplete(() => {
                             console.log('Crate dropped to the ground');
                             createDustEffect();
