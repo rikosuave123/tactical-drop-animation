@@ -86,7 +86,7 @@
 
                 // Function to deflate the parachute
                 function deflateParachute() {
-                    const deflateTween = new TWEEN.Tween(crate.material.map.offset)
+                    const deflateTween = new TWEEN.Tween(crate.scale)
                         .to({ y: 0.5 }, 1000) // Adjust this value to control how much the parachute deflates
                         .easing(TWEEN.Easing.Cubic.InOut)
                         .start();
