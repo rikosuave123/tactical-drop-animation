@@ -85,6 +85,9 @@
                                     new TWEEN.Tween(crate.position)
                                         .to({ y: 0 }, 200)
                                         .easing(TWEEN.Easing.Bounce.Out)
+                                        .onComplete(() => {
+                                            crate.position.y = 0; // Ensure the crate stays on the ground
+                                        })
                                         .start();
                                 })
                                 .start();
