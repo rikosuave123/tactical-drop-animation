@@ -52,10 +52,14 @@
                             .to({ y: 0.5 }, 800)
                             .easing(TWEEN.Easing.Quadratic.Out)
                             .start();
+
                         new TWEEN.Tween(dust.material)
                             .to({ opacity: 0 }, 800)
                             .easing(TWEEN.Easing.Quadratic.Out)
-                            .onComplete(() => scene.remove(dust))
+                            .onComplete(() => {
+                                scene.remove(dust);
+                                console.log('Dust particle removed');
+                            })
                             .start();
                     }
                 }
@@ -72,6 +76,7 @@
                         .to({ y: 0 }, 2000)
                         .easing(TWEEN.Easing.Bounce.Out)
                         .onComplete(() => {
+                            console.log('Crate dropped to the ground');
                             createDustEffect();
                             playSound();
                         })
