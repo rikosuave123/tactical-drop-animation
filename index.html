@@ -77,10 +77,14 @@
                         .easing(TWEEN.Easing.Cubic.Out)
                         .onComplete(() => {
                             console.log('Crate dropped to the ground');
-                            createDustEffect();
-                            playSound();
                         })
                         .start();
+
+                    // Trigger dust effect and sound immediately after the crate hits the ground
+                    setTimeout(() => {
+                        createDustEffect();
+                        playSound();
+                    }, 2000);
                 }
 
                 // Render loop
