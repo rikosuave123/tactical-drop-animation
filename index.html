@@ -77,14 +77,14 @@
                         .easing(TWEEN.Easing.Cubic.Out)
                         .onComplete(() => {
                             console.log('Crate dropped to the ground');
-                            // Bounce effect
+                            // Subtle bounce effect
                             new TWEEN.Tween(crate.position)
-                                .to({ y: -0.5 }, 300)
-                                .easing(TWEEN.Easing.Bounce.Out)
+                                .to({ y: -0.2 }, 200)
+                                .easing(TWEEN.Easing.Quadratic.Out)
                                 .onComplete(() => {
                                     new TWEEN.Tween(crate.position)
-                                        .to({ y: 0 }, 200)
-                                        .easing(TWEEN.Easing.Bounce.Out)
+                                        .to({ y: 0 }, 150)
+                                        .easing(TWEEN.Easing.Quadratic.Out)
                                         .onComplete(() => {
                                             crate.position.y = 0; // Ensure the crate stays on the ground
                                         })
