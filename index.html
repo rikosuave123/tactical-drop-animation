@@ -24,6 +24,7 @@
         loader.load(
             'https://raw.githubusercontent.com/rikosuave123/tactical-drop-animation/main/military_parachute_transparent__1_-removebg-preview.png',
             function(texture) {
+                console.log('Texture loaded successfully');
                 // Create crate as a plane with the loaded texture
                 const crateGeometry = new THREE.PlaneGeometry(5, 5);
                 const crateMaterial = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
@@ -73,6 +74,9 @@
             camera.updateProjectionMatrix();
         });
 
+        // Debugging: Log window size and camera aspect
+        console.log('Window size:', window.innerWidth, window.innerHeight);
+        console.log('Camera aspect:', camera.aspect);
     </script>
 </body>
 </html>
