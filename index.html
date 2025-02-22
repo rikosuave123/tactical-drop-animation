@@ -27,7 +27,7 @@
                 const crate = new THREE.Mesh(crateGeometry, crateMaterial);
                 
                 // Correct orientation to face the camera
-                crate.rotation.x = -Math.PI / 2;
+                crate.rotation.x = 0;
                 crate.position.set(0, 10, 0);
                 scene.add(crate);
 
@@ -68,4 +68,8 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
-      
+        });
+
+    </script>
+</body>
+</html>
