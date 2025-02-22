@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crate Drop Animation</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tweenjs/tween.js@18.6.4/dist/tween.umd.js"></script>
+</head>
+<body style="margin: 0; overflow: hidden;">
+    <script>
+        // Set up scene
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Load textures
+        const loader = new THREE.TextureLoader();
+        const crateTexture = loader.load('https://threejsfundamentals.org/threejs/resources/images/wall.jpg'); // Replace with real texture
+        const parachuteTexture = loader.load('https://threejsfundamentals.org/threejs/resources/images/cloud.png'); // Replace with real parachute texture
+
+        // Create crate
+        const crateGeometry = new THREE.BoxGeometry(2, 2, 2);
+        const crateMaterial = new THREE.MeshBasicMaterial({ map: crateTexture });
+        const crate = new THREE.Mesh(crateGeometry, crateMaterial);
+        crate.position.set(0, 10, 0);
+        scene.add(crate);
+
+        // Create parachute
+        const parachuteGeometry = new THREE.SphereGeometry(2.5, 32, 32);
+        const parachuteMaterial = new THREE.MeshBasicMaterial({ map: parachuteTexture, transparent: true });
+        const parachute = new THREE.Mesh(parachuteGeometry, parachuteMaterial);
+        parachute.position.set(0, 12, 0);
+        scene.add(parachute);
+
+        // Position camera
+        camera.position.z = 10;
+
+        // Animate the drop
+        function animateDrop() {
+            const tween = new TWEEN.Tween(crate.position)
+                .to({ y: 0 }, 3000)
+                .easing(TWEEN.Easing.Bounce.Out)
+                .onUpdate(() => parachute.position.y = crate.position.y + 2)
+                .onComplete(() => playSound())
+                .start();
+        }
+
+        // Play soft thud sound on impact
+        function playSound() {
+            const audio = new Audio('https://www.soundjay.com/button/sounds/button-3.mp3'); // Replace with real sound
+            audio.play();
+        }
+
+        // Render loop
+        function animate() {
+            requestAnimationFrame(animate);
+            TWEEN.update();
+            renderer.render(scene, camera);
+        }
+
+        animate();
+        animateDrop();
+    </script>
+</body>
+</html>
