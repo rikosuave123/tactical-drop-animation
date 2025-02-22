@@ -16,13 +16,13 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
-        // Load textures
+        // Load crate with parachute texture
         const loader = new THREE.TextureLoader();
-        const crateTexture = loader.load(https://github.com/rikosuave123/tactical-drop-animation/blob/main/military_parachute_transparent__1_-removebg-preview.png?raw=true)
+        const crateTexture = loader.load('https://raw.githubusercontent.com/rikosuave123/tactical-drop-animation/main/military_parachute.png'); // Replace with your raw image URL
 
-        // Create crate
-        const crateGeometry = new THREE.BoxGeometry(2, 2, 2);
-        const crateMaterial = new THREE.MeshBasicMaterial({ map: crateTexture });
+        // Create crate with parachute as one object
+        const crateGeometry = new THREE.PlaneGeometry(5, 5);
+        const crateMaterial = new THREE.MeshBasicMaterial({ map: crateTexture, transparent: true });
         const crate = new THREE.Mesh(crateGeometry, crateMaterial);
         crate.position.set(0, 10, 0);
         scene.add(crate);
@@ -39,9 +39,9 @@
                 .start();
         }
 
-        // Play soft thud sound on impact
+        // Play soft thud sound
         function playSound() {
-            const audio = new Audio('https://www.soundjay.com/button/sounds/button-3.mp3'); // Replace with real sound
+            const audio = new Audio('https://www.soundjay.com/button/sounds/button-3.mp3'); // Replace with your sound
             audio.play();
         }
 
