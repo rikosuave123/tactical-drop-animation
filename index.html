@@ -43,13 +43,13 @@
 
                     for (let i = 0; i < 10; i++) {
                         const dust = new THREE.Mesh(dustGeometry, dustMaterial);
-                        dust.position.set(crate.position.x + (Math.random() - 0.5) * 2, 0.1, crate.position.z + (Math.random() - 0.5) * 2 - 2.5); // Adjust position to be at the bottom of the box
+                        dust.position.set(crate.position.x + (Math.random() - 0.5) * 2, -2.5, crate.position.z + (Math.random() - 0.5) * 2); // Adjust position to be at the bottom of the box
                         scene.add(dust);
                         dustParticles.push(dust);
 
                         // Animate dust rising and fading
                         new TWEEN.Tween(dust.position)
-                            .to({ y: 0.5 }, 800)
+                            .to({ y: -2 }, 800)
                             .easing(TWEEN.Easing.Quadratic.Out)
                             .start();
 
@@ -79,16 +79,7 @@
                             console.log('Crate dropped to the ground');
                             createDustEffect();
                             playSound();
-                            deflateParachute();
                         })
-                        .start();
-                }
-
-                // Function to deflate the parachute
-                function deflateParachute() {
-                    const deflateTween = new TWEEN.Tween(crate.scale)
-                        .to({ y: 0.5 }, 1000) // Adjust this value to control how much the parachute deflates
-                        .easing(TWEEN.Easing.Cubic.InOut)
                         .start();
                 }
 
