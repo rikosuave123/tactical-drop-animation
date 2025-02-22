@@ -9,51 +9,63 @@
 </head>
 <body style="margin: 0; overflow: hidden;">
     <script>
-        // Set up scene
+        // Set up the scene, camera, and renderer
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
-        // Load crate with parachute texture
+        // Load crate texture with a callback to ensure it loads before animation starts
         const loader = new THREE.TextureLoader();
-        const crateTexture = loader.load('https://raw.githubusercontent.com/rikosuave123/tactical-drop-animation/main/military_parachute_transparent__1_-removebg-preview.png');
+        loader.load(
+            'https://raw.githubusercontent.com/rikosuave123/tactical-drop-animation/main/military_parachute_transparent__1_-removebg-preview.png',
+            function(texture) {
+                // Create crate as a plane with the loaded texture
+                const crateGeometry = new THREE.PlaneGeometry(5, 5);
+                const crateMaterial = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
+                const crate = new THREE.Mesh(crateGeometry, crateMaterial);
+                
+                // Correct orientation to face the camera
+                crate.rotation.x = -Math.PI / 2;
+                crate.position.set(0, 10, 0);
+                scene.add(crate);
 
-        // Create crate with parachute as one object
-        const crateGeometry = new THREE.PlaneGeometry(5, 5);
-        const crateMaterial = new THREE.MeshBasicMaterial({ map: crateTexture, transparent: true });
-        const crate = new THREE.Mesh(crateGeometry, crateMaterial);
-        crate.position.set(0, 10, 0);
-        scene.add(crate);
+                // Animate the drop
+                function animateDrop() {
+                    const tween = new TWEEN.Tween(crate.position)
+                        .to({ y: 0 }, 3000)
+                        .easing(TWEEN.Easing.Bounce.Out)
+                        .onComplete(() => playSound())
+                        .start();
+                }
 
-        // Position camera
-        camera.position.z = 10;
+                // Play soft thud sound
+                function playSound() {
+                    const audio = new Audio('https://www.soundjay.com/button/sounds/button-3.mp3'); // Replace with your sound
+                    audio.play();
+                }
 
-        // Animate the drop
-        function animateDrop() {
-            const tween = new TWEEN.Tween(crate.position)
-                .to({ y: 0 }, 3000)
-                .easing(TWEEN.Easing.Bounce.Out)
-                .onComplete(() => playSound())
-                .start();
-        }
+                // Render loop
+                function animate() {
+                    requestAnimationFrame(animate);
+                    TWEEN.update();
+                    renderer.render(scene, camera);
+                }
 
-        // Play soft thud sound
-        function playSound() {
-            const audio = new Audio('https://www.soundjay.com/button/sounds/button-3.mp3'); // Replace with your sound
-            audio.play();
-        }
+                // Start animation after texture loads
+                animate();
+                animateDrop();
+            },
+            undefined,
+            function(error) {
+                console.error('Texture failed to load:', error);
+            }
+        );
 
-        // Render loop
-        function animate() {
-            requestAnimationFrame(animate);
-            TWEEN.update();
-            renderer.render(scene, camera);
-        }
-
-        animate();
-        animateDrop();
-    </script>
-</body>
-</html>
+        // Adjust scene on window resize
+        window.addEventListener('resize', () => {
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+      
