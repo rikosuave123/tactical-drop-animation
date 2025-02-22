@@ -35,19 +35,47 @@
                 crate.position.set(0, 10, 0);
                 scene.add(crate);
 
-                // Animate the drop
-                function animateDrop() {
-                    const tween = new TWEEN.Tween(crate.position)
-                        .to({ y: 0 }, 3000)
-                        .easing(TWEEN.Easing.Bounce.Out)
-                        .onComplete(() => playSound())
-                        .start();
+                // Function to create a dust effect on impact
+                function createDustEffect() {
+                    const dustParticles = [];
+                    const dustGeometry = new THREE.CircleGeometry(0.2, 8);
+                    const dustMaterial = new THREE.MeshBasicMaterial({ color: 0x8B5A2B, transparent: true, opacity: 0.6 });
+
+                    for (let i = 0; i < 10; i++) {
+                        const dust = new THREE.Mesh(dustGeometry, dustMaterial);
+                        dust.position.set(crate.position.x + (Math.random() - 0.5) * 2, 0.1, crate.position.z + (Math.random() - 0.5) * 2);
+                        scene.add(dust);
+                        dustParticles.push(dust);
+
+                        // Animate dust rising and fading
+                        new TWEEN.Tween(dust.position)
+                            .to({ y: 0.5 }, 800)
+                            .easing(TWEEN.Easing.Quadratic.Out)
+                            .start();
+                        new TWEEN.Tween(dust.material)
+                            .to({ opacity: 0 }, 800)
+                            .easing(TWEEN.Easing.Quadratic.Out)
+                            .onComplete(() => scene.remove(dust))
+                            .start();
+                    }
                 }
 
                 // Play soft thud sound
                 function playSound() {
                     const audio = new Audio('https://www.soundjay.com/button/sounds/button-3.mp3'); // Replace with your sound
                     audio.play();
+                }
+
+                // Animate the drop
+                function animateDrop() {
+                    new TWEEN.Tween(crate.position)
+                        .to({ y: 0 }, 2000)
+                        .easing(TWEEN.Easing.Bounce.Out)
+                        .onComplete(() => {
+                            createDustEffect();
+                            playSound();
+                        })
+                        .start();
                 }
 
                 // Render loop
