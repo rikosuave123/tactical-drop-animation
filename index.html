@@ -77,6 +77,17 @@
                         .easing(TWEEN.Easing.Cubic.Out)
                         .onComplete(() => {
                             console.log('Crate dropped to the ground');
+                            // Bounce effect
+                            new TWEEN.Tween(crate.position)
+                                .to({ y: -0.5 }, 300)
+                                .easing(TWEEN.Easing.Bounce.Out)
+                                .onComplete(() => {
+                                    new TWEEN.Tween(crate.position)
+                                        .to({ y: 0 }, 200)
+                                        .easing(TWEEN.Easing.Bounce.Out)
+                                        .start();
+                                })
+                                .start();
                         })
                         .start();
 
