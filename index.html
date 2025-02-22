@@ -16,6 +16,9 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
+        // Position the camera
+        camera.position.z = 10;
+
         // Load crate texture with a callback to ensure it loads before animation starts
         const loader = new THREE.TextureLoader();
         loader.load(
