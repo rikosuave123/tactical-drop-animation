@@ -18,8 +18,7 @@
 
         // Load textures
         const loader = new THREE.TextureLoader();
-        const crateTexture = loader.load('https://threejsfundamentals.org/threejs/resources/images/wall.jpg'); // Replace with real texture
-        const parachuteTexture = loader.load('https://threejsfundamentals.org/threejs/resources/images/cloud.png'); // Replace with real parachute texture
+        const crateTexture = loader.load(https://github.com/rikosuave123/tactical-drop-animation/blob/main/military_parachute_transparent__1_-removebg-preview.png?raw=true)
 
         // Create crate
         const crateGeometry = new THREE.BoxGeometry(2, 2, 2);
@@ -27,13 +26,6 @@
         const crate = new THREE.Mesh(crateGeometry, crateMaterial);
         crate.position.set(0, 10, 0);
         scene.add(crate);
-
-        // Create parachute
-        const parachuteGeometry = new THREE.SphereGeometry(2.5, 32, 32);
-        const parachuteMaterial = new THREE.MeshBasicMaterial({ map: parachuteTexture, transparent: true });
-        const parachute = new THREE.Mesh(parachuteGeometry, parachuteMaterial);
-        parachute.position.set(0, 12, 0);
-        scene.add(parachute);
 
         // Position camera
         camera.position.z = 10;
@@ -43,7 +35,6 @@
             const tween = new TWEEN.Tween(crate.position)
                 .to({ y: 0 }, 3000)
                 .easing(TWEEN.Easing.Bounce.Out)
-                .onUpdate(() => parachute.position.y = crate.position.y + 2)
                 .onComplete(() => playSound())
                 .start();
         }
